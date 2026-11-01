@@ -1,0 +1,11 @@
+# Sistema / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Entorno y secretos
+.env
+.env.*
+
+# (añade aquí lo de tu stack: node_modules/, dist/, __pycache__/...)
