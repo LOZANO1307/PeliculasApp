@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/PeliculasApp.Application/PeliculasApp.Application.csproj" />
+    <Project Path="src/PeliculasApp.Domain/PeliculasApp.Domain.csproj" />
+    <Project Path="src/PeliculasApp.Infrastructure/PeliculasApp.Infrastructure.csproj" />
+    <Project Path="src/PeliculasApp.Web/PeliculasApp.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/PeliculasApp.UnitTests/PeliculasApp.UnitTests.csproj" />
+  </Folder>
+</Solution>

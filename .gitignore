@@ -3,9 +3,14 @@
 Thumbs.db
 .idea/
 .vscode/
+.vs/
 
 # Entorno y secretos
 .env
 .env.*
+*.user
 
-# (añade aquí lo de tu stack: node_modules/, dist/, __pycache__/...)
+# .NET
+bin/
+obj/
+TestResults/

@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\PeliculasApp.Application\PeliculasApp.Application.csproj" />
+    <ProjectReference Include="..\PeliculasApp.Infrastructure\PeliculasApp.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>14d8122c-8759-4f7a-a7f3-2b8115c811fd</UserSecretsId>
+  </PropertyGroup>
+
+</Project>
