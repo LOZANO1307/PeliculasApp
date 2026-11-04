@@ -1,0 +1,64 @@
+@model PeliculasApp.Web.ViewModels.ListaPeliculasVM
+@{
+    ViewData["Title"] = Model.Query is null ? "En tendencia esta semana" : $"Resultados de \"{Model.Query}\"";
+}
+
+<h2 class="mb-4">
+    @if (Model.Query is null)
+    {
+        <span>En tendencia esta semana</span>
+    }
+    else
+    {
+        <span>Resultados de "@Model.Query" <small class="text-secondary">@Model.TotalResults películas</small></span>
+    }
+</h2>
+
+<div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-3">
+    @foreach (var peli in Model.Peliculas)
+    {
+        <div class="col">
+            <div class="card h-100 movie-card" style="border: none; background: transparent;">
+                @if (peli.PosterUrl is not null)
+                {
+                    <img src="@peli.PosterUrl" class="w-100 rounded-3" style="aspect-ratio: 2 / 3; object-fit: cover;" alt="@peli.Title" loading="lazy" />
+                }
+                else
+                {
+                    <div class="d-flex align-items-center justify-content-center placeholder-glow rounded-3 bg-secondary-subtle" style="aspect-ratio: 2 / 3;">
+                        <span class="text-center px-2 small">@peli.Title</span>
+                    </div>
+                }
+                <div class="pt-2">
+                    <div class="small text-truncate" title="@peli.Title">@peli.Title</div>
+                    <div class="small text-secondary">
+                        @if (DateTime.TryParse(peli.ReleaseDate, out var fecha))
+                        {
+                            <span>@fecha.Year ·</span>
+                        }
+                        <i class="bi bi-star-fill text-warning small me-1"></i>@peli.VoteAverage.ToString("0.0")
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@if (Model.TotalPages > 1)
+{
+    <nav class="mt-4" aria-label="Paginación de películas">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(Model.Page <= 1 ? "disabled" : "")">
+                <a class="page-link" asp-action="@ViewContext.RouteData.Values["action"]"
+                   asp-route-q="@Model.Query" asp-route-page="@(Model.Page - 1)">←</a>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link">Página @Model.Page de @Model.TotalPages</span>
+            </li>
+            <li class="page-item @(Model.Page >= Model.TotalPages ? "disabled" : "")">
+                <a class="page-link" asp-action="@ViewContext.RouteData.Values["action"]"
+                   asp-route-q="@Model.Query" asp-route-page="@(Model.Page + 1)">→</a>
+            </li>
+        </ul>
+    </nav>
+}

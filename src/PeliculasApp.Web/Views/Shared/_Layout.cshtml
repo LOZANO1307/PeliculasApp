@@ -1,32 +1,34 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - PeliculasApp.Web</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>@ViewData["Title"] - PeliculasApp</title>
+    <!-- Tema oscuro de Bootswatch (variante de Bootstrap 5) -->
+    <link rel="stylesheet" href="~/lib/bootswatch/dist/darkly/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/PeliculasApp.Web.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-md border-bottom mb-3" data-bs-theme="dark">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PeliculasApp.Web</a>
+                <a class="navbar-brand fw-bold" asp-controller="Movies" asp-action="Index"><i class="bi bi-film me-1"></i>PeliculasApp</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" asp-controller="Movies" asp-action="Index">Tendencias</a>
                         </li>
                     </ul>
+                    <form asp-controller="Movies" asp-action="Search" method="get" class="d-flex gap-2" role="search">
+                        <input name="q" type="search" class="form-control form-control-sm" placeholder="Buscar película..." value="@Context.Request.Query["q"]" />
+                        <button class="btn btn-primary btn-sm" type="submit"><i class="bi bi-search"></i> Buscar</button>
+                    </form>
                 </div>
             </div>
         </nav>
@@ -39,10 +41,9 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2026 - PeliculasApp.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            PeliculasApp · Datos de <a href="https://www.themoviedb.org">TMDB</a>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

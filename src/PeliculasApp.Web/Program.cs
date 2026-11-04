@@ -1,4 +1,5 @@
 using PeliculasApp.Application.Interfaces;
+using PeliculasApp.Infrastructure.Services;
 using PeliculasApp.Infrastructure.Tmdb;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,9 @@ builder.Services.AddHttpClient<ITmdbClient, TmdbClient>(http =>
     // el último segmento si no termina en barra ("/3" desaparecería).
     http.BaseAddress = new Uri(tmdbSettings.BaseUrl.TrimEnd('/') + "/");
 });
+
+// Casos de uso de películas (hoy delega en TMDB; pronto mezclará nuestra BD)
+builder.Services.AddScoped<IMovieService, MovieService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -35,7 +39,7 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=Movies}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 
