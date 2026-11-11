@@ -6,11 +6,8 @@ using PeliculasApp.Application.Interfaces;
 
 namespace PeliculasApp.Infrastructure.Tmdb;
 
-/// <summary>
-/// Implementación de ITmdbClient contra la API v3 de TMDB.
-/// Es un "typed client": AddHttpClient le inyecta directamente un HttpClient
-/// listo (sin hacer new, sin preocuparse por su ciclo de vida).
-/// </summary>
+// Cliente HTTP para TMDB. Es un "typed client": AddHttpClient le inyecta
+// directamente el HttpClient (sin new, sin manejar su ciclo de vida).
 public class TmdbClient : ITmdbClient
 {
     private readonly HttpClient _http;
@@ -44,5 +41,22 @@ public class TmdbClient : ITmdbClient
         var response = await _http.GetAsync(url, ct);
         response.EnsureSuccessStatusCode();
         return (await response.Content.ReadFromJsonAsync<TmdbPagedResult>(JsonOptions, ct))!;
+    }
+
+    public async Task<TmdbMovieDetail> GetDetailAsync(int id, CancellationToken ct = default)
+        => await GetAsync<TmdbMovieDetail>($"movie/{id}", ct);
+
+    public async Task<TmdbCredits> GetCreditsAsync(int id, CancellationToken ct = default)
+        => await GetAsync<TmdbCredits>($"movie/{id}/credits", ct);
+
+    public async Task<TmdbVideoList> GetVideosAsync(int id, CancellationToken ct = default)
+        => await GetAsync<TmdbVideoList>($"movie/{id}/videos", ct);
+
+    private async Task<T> GetAsync<T>(string resource, CancellationToken ct)
+    {
+        var url = $"{resource}?api_key={_settings.ApiKey}";
+        var response = await _http.GetAsync(url, ct);
+        response.EnsureSuccessStatusCode();
+        return (await response.Content.ReadFromJsonAsync<T>(JsonOptions, ct))!;
     }
 }

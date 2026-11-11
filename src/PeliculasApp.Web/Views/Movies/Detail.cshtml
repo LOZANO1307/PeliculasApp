@@ -1,0 +1,117 @@
+@model PeliculasApp.Web.ViewModels.DetallePeliculaVM
+@using System.Globalization
+@{
+    ViewData["Title"] = Model.Title;
+    var fondo = $"background-image: linear-gradient(to bottom, rgba(15,15,15,.6), var(--bs-body-bg)), url('{Model.BackdropUrl}');";
+    DateTime? fecha = DateTime.TryParse(Model.ReleaseDate, out var f) ? f : null;
+}
+
+<div class="row g-4" style="@fondo background-size: cover; background-position: center top; border-radius: .75rem; margin-top: -1rem">
+    <div class="col-md-4 col-lg-3">
+        @if (Model.PosterUrl is not null)
+        {
+            <img src="@Model.PosterUrl" class="img-fluid rounded-4 shadow" alt="Póster de @Model.Title" />
+        }
+    </div>
+    <div class="col-md-8 col-lg-9 py-4">
+        @if (fecha is not null)
+        {
+            <div class="text-uppercase small text-secondary mb-2">@fecha.Value.ToString("d MMMM yyyy", new CultureInfo("es"))</div>
+        }
+        <h1 class="fw-bold">@Model.Title</h1>
+        @if (!string.IsNullOrWhiteSpace(Model.Tagline))
+        {
+            <p class="fst-italic text-secondary mb-3">"@Model.Tagline"</p>
+        }
+
+        <div class="d-flex align-items-center gap-3 mb-3 flex-wrap">
+            @if (Model.VoteAverage > 0)
+            {
+                <span class="d-inline-flex align-items-center gap-1">
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <strong>@Model.VoteAverage.ToString("0.0")</strong>
+                    <span class="text-secondary small">(@Model.VoteCount.ToString("N0", new CultureInfo("es")) votos)</span>
+                </span>
+            }
+            @foreach (var genero in Model.Genres)
+            {
+                <span class="badge text-bg-secondary">@genero.Name</span>
+            }
+        </div>
+
+        <h5>Sinopsis</h5>
+        <p class="@(string.IsNullOrWhiteSpace(Model.Overview) ? "text-secondary" : "text-wrap")" style="max-width: 65ch;">
+            @{ var sinopsis = string.IsNullOrWhiteSpace(Model.Overview) ? "Sin sinopsis disponible." : Model.Overview; }
+            @sinopsis
+        </p>
+    </div>
+</div>
+
+@if (Model.TrailerKey is not null)
+{
+    <div class="ratio ratio-16x9 mt-4 rounded-4 overflow-hidden shadow" style="max-width: 960px;">
+        <iframe src="https://www.youtube.com/embed/@Model.TrailerKey" title="Tráiler de @Model.Title"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+    </div>
+}
+
+<div class="row mt-4">
+    <div class="col-lg-8">
+        @if (Model.Cast.Count > 0)
+        {
+            <h4 class="mb-3 mt-5">Reparto principal</h4>
+            <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-3">
+                @foreach (var actor in Model.Cast)
+                {
+                    <div class="col">
+                        <div class="d-flex gap-2 align-items-center">
+                            @if (actor.ProfileUrl is not null)
+                            {
+                                <img src="@actor.ProfileUrl" class="rounded-circle flex-shrink-0 object-fit-cover" width="48" height="48" alt="Foto de @actor.Name" loading="lazy" />
+                            }
+                            else
+                            {
+                                <div class="rounded-circle bg-secondary flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                    <i class="bi bi-person-fill fs-5"></i>
+                                </div>
+                            }
+                            <div class="small overflow-hidden">
+                                <div class="text-truncate" title="@actor.Name">@actor.Name</div>
+                                <div class="text-truncate text-secondary" title="@actor.Character">@actor.Character</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+    <div class="col-lg-4">
+        <div class="card mt-5">
+            <div class="card-body">
+                <h5 class="card-title mb-3"><i class="bi bi-info-circle me-1"></i>Ficha técnica</h5>
+                @if (Model.Runtime > 0)
+                {
+                    <div class="d-flex justify-content-between border-bottom py-2">
+                        <span class="text-secondary">Duración</span>
+                        <span>@(Model.Runtime / 60)h @(Model.Runtime % 60)min</span>
+                    </div>
+                }
+                @if (fecha is not null)
+                {
+                    <div class="d-flex justify-content-between border-bottom py-2">
+                        <span class="text-secondary">Estreno</span>
+                        <span>@fecha.Value.ToString("d 'de' MMMM 'de' yyyy", new CultureInfo("es"))</span>
+                    </div>
+                }
+                @if (Model.Genres.Count > 0)
+                {
+                    <div class="d-flex justify-content-between py-2">
+                        <span class="text-secondary">Géneros</span>
+                        <span class="text-end">@string.Join(", ", Model.Genres.Select(g => g.Name))</span>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,9 +1,6 @@
 namespace PeliculasApp.Infrastructure.Tmdb;
 
-/// <summary>
-/// Configuración del cliente TMDB. Se enlaza desde la sección "Tmdb" de la
-/// configuración; la ApiKey viene de user-secrets (dev) o variables de entorno.
-/// </summary>
+// Configuración el cliente TMDB. Se enlaza del appsettings / user-secrets.
 public class TmdbSettings
 {
     public const string SectionName = "Tmdb";

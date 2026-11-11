@@ -15,6 +15,7 @@ builder.Services.AddHttpClient<ITmdbClient, TmdbClient>(http =>
 });
 
 // Casos de uso de películas (hoy delega en TMDB; pronto mezclará nuestra BD)
+builder.Services.AddMemoryCache();
 builder.Services.AddScoped<IMovieService, MovieService>();
 
 // Add services to the container.

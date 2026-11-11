@@ -10,4 +10,10 @@ public interface ITmdbClient
 
     // Búsqueda por título.
     Task<TmdbPagedResult> SearchAsync(string query, int page = 1, CancellationToken ct = default);
+
+    Task<TmdbMovieDetail> GetDetailAsync(int id, CancellationToken ct = default);
+
+    Task<TmdbCredits> GetCreditsAsync(int id, CancellationToken ct = default);
+
+    Task<TmdbVideoList> GetVideosAsync(int id, CancellationToken ct = default);
 }

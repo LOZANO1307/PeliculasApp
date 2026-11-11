@@ -40,6 +40,36 @@ public class MoviesController : Controller
         return View("Index", vm);
     }
 
+    [HttpGet("Movies/Detail/{id:int}")]
+    public async Task<IActionResult> Detail(int id, CancellationToken ct = default)
+    {
+        var bundle = await _movies.GetDetailAsync(id, ct);
+        var m = bundle.Movie;
+
+        var vm = new DetallePeliculaVM
+        {
+            Id = m.Id,
+            Title = m.Title,
+            Tagline = m.Tagline,
+            Overview = m.Overview,
+            PosterUrl = m.PosterPath is null ? null : $"{_settings.ImageBaseUrl}w342{m.PosterPath}",
+            BackdropUrl = m.BackdropPath is null ? null : $"{_settings.ImageBaseUrl}w1280{m.BackdropPath}",
+            ReleaseDate = m.ReleaseDate,
+            VoteAverage = m.VoteAverage,
+            VoteCount = m.VoteCount,
+            Runtime = m.Runtime,
+            Genres = m.Genres,
+            TrailerKey = bundle.TrailerKey,
+            Cast = bundle.Cast.Take(12).Select(c => new ActorVM
+            {
+                Name = c.Name,
+                Character = c.Character,
+                ProfileUrl = c.ProfilePath is null ? null : $"{_settings.ImageBaseUrl}w185{c.ProfilePath}",
+            }).ToList(),
+        };
+        return View(vm);
+    }
+
     private ListaPeliculasVM ToVM(TmdbPagedResult result)
     {
         var tt = _settings.ImageBaseUrl;

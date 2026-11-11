@@ -19,26 +19,28 @@
     {
         <div class="col">
             <div class="card h-100 movie-card" style="border: none; background: transparent;">
-                @if (peli.PosterUrl is not null)
-                {
-                    <img src="@peli.PosterUrl" class="w-100 rounded-3" style="aspect-ratio: 2 / 3; object-fit: cover;" alt="@peli.Title" loading="lazy" />
-                }
-                else
-                {
-                    <div class="d-flex align-items-center justify-content-center placeholder-glow rounded-3 bg-secondary-subtle" style="aspect-ratio: 2 / 3;">
-                        <span class="text-center px-2 small">@peli.Title</span>
+                <a asp-action="Detail" asp-route-id="@peli.Id" class="text-decoration-none text-reset">
+                    @if (peli.PosterUrl is not null)
+                    {
+                        <img src="@peli.PosterUrl" class="w-100 rounded-3" style="aspect-ratio: 2 / 3; object-fit: cover;" alt="@peli.Title" loading="lazy" />
+                    }
+                    else
+                    {
+                        <div class="d-flex align-items-center justify-content-center placeholder-glow rounded-3 bg-secondary-subtle" style="aspect-ratio: 2 / 3;">
+                            <span class="text-center px-2 small">@peli.Title</span>
+                        </div>
+                    }
+                    <div class="pt-2">
+                        <div class="small text-truncate" title="@peli.Title">@peli.Title</div>
+                        <div class="small text-secondary">
+                            @if (DateTime.TryParse(peli.ReleaseDate, out var fecha))
+                            {
+                                <span>@fecha.Year ·</span>
+                            }
+                            <i class="bi bi-star-fill text-warning small me-1"></i>@peli.VoteAverage.ToString("0.0")
+                        </div>
                     </div>
-                }
-                <div class="pt-2">
-                    <div class="small text-truncate" title="@peli.Title">@peli.Title</div>
-                    <div class="small text-secondary">
-                        @if (DateTime.TryParse(peli.ReleaseDate, out var fecha))
-                        {
-                            <span>@fecha.Year ·</span>
-                        }
-                        <i class="bi bi-star-fill text-warning small me-1"></i>@peli.VoteAverage.ToString("0.0")
-                    </div>
-                </div>
+                </a>
             </div>
         </div>
     }
